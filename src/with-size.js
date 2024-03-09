@@ -155,6 +155,11 @@ function withSize(config = defaultConfig) {
     const SizeMeRenderWrapper = renderWrapper(WrappedComponent)
 
     class SizeAwareComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.element = React.createRef();
+      }
+
       static displayName = `SizeMe(${getDisplayName(WrappedComponent)})`
 
       domEl = null
@@ -220,7 +225,8 @@ function withSize(config = defaultConfig) {
         this.strategy === 'callback' ? this.callbackState : this.state
 
       handleDOMNode() {
-        const found = this.element && ReactDOM.findDOMNode(this.element)
+        const found = this.element && ReactDOM.findDOMNode(this.element.current);
+
 
         if (!found) {
           // If we previously had a dom node then we need to ensure that
